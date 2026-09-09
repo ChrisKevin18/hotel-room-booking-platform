@@ -1,16 +1,5 @@
 # Hotel Room Booking & Reservation Platform
 
-## Team Details
-
-| Member | Name | Roll No. | Department | Section | Primary Contribution |
-|---|---|---|---|---|---|
-| Member 1 | **Fill in** | **Fill in** | **Fill in** | **Fill in** | Authentication, Hotel & Property Management, Room Inventory |
-| Member 2 | **Fill in** | **Fill in** | **Fill in** | **Fill in** | Availability, Reservation Booking, Dynamic Pricing, Booking Status |
-| Member 3 | **Fill in** | **Fill in** | **Fill in** | **Fill in** | Check-in/Check-out, Housekeeping, Cancellation/Refund, History |
-| Member 4 | **Fill in** | **Fill in** | **Fill in** | **Fill in** | Invoice, Occupancy/Revenue Reports, Postman, README/PPT |
-
-> Before submission, replace the placeholders above with the official team details.
-
 ## Problem Statement
 A backend platform for hotel property management and room reservations that supports secure guest authentication, hotel and room inventory, date/occupancy availability, reservation pricing, booking lifecycle management, staff operations, cancellation/refunds, invoices and administrative reports.
 
