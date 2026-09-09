@@ -1,0 +1,59 @@
+{
+  "info": {
+    "name": "Hotel Room Booking Platform - CIA3",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection covering authentication, hotel/property management, room inventory, availability, booking workflow, pricing, cancellation, housekeeping, check-in/check-out, invoices and reports."
+  },
+  "variable": [
+    {"key":"baseUrl","value":"http://localhost:5000"},
+    {"key":"token","value":""},
+    {"key":"hotelId","value":""},
+    {"key":"roomTypeId","value":""},
+    {"key":"roomId","value":""},
+    {"key":"bookingId","value":""},
+    {"key":"pricingRuleId","value":""},
+    {"key":"guestId","value":""}
+  ],
+  "item": [
+    {"name":"Authentication","item":[
+      {"name":"Register Guest","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"name\": \"Demo Guest\",\n  \"email\": \"guest@example.com\",\n  \"password\": \"Guest@123\"\n}"},"url":{"raw":"{{baseUrl}}/api/auth/register","host":["{{baseUrl}}"],"path":["api","auth","register"]}}},
+      {"name":"Login","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"email\": \"admin@hotelbooking.com\",\n  \"password\": \"Admin@123\"\n}"},"url":{"raw":"{{baseUrl}}/api/auth/login","host":["{{baseUrl}}"],"path":["api","auth","login"]}}}
+    ]},
+    {"name":"Hotels","item":[
+      {"name":"List Hotels","request":{"method":"GET","url":{"raw":"{{baseUrl}}/api/hotels","host":["{{baseUrl}}"],"path":["api","hotels"]}}},
+      {"name":"Create Hotel","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"name\": \"Demo Grand Hotel\",\n  \"city\": \"Bengaluru\",\n  \"amenities\": [\"WiFi\",\"Pool\",\"Parking\"],\n  \"rating\": 4.5\n}"},"url":{"raw":"{{baseUrl}}/api/admin/hotels","host":["{{baseUrl}}"],"path":["api","admin","hotels"]}}},
+      {"name":"Update Hotel","request":{"method":"PUT","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"name\": \"Updated Grand Hotel\",\n  \"city\": \"Bengaluru\",\n  \"amenities\": [\"WiFi\",\"Pool\"],\n  \"rating\": 4.7\n}"},"url":{"raw":"{{baseUrl}}/api/admin/hotels/{{hotelId}}","host":["{{baseUrl}}"],"path":["api","admin","hotels","{{hotelId}}"]}}},
+      {"name":"Delete Hotel","request":{"method":"DELETE","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/admin/hotels/{{hotelId}}","host":["{{baseUrl}}"],"path":["api","admin","hotels","{{hotelId}}"]}}}
+    ]},
+    {"name":"Rooms & Availability","item":[
+      {"name":"Create Room Type","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"hotelId\": \"{{hotelId}}\",\n  \"name\": \"Deluxe King\",\n  \"capacity\": 2,\n  \"basePrice\": 3500,\n  \"totalRooms\": 10,\n  \"description\": \"King room with city view\"\n}"},"url":{"raw":"{{baseUrl}}/api/admin/room-types","host":["{{baseUrl}}"],"path":["api","admin","room-types"]}}},
+      {"name":"List Room Types","request":{"method":"GET","url":{"raw":"{{baseUrl}}/api/room-types?hotelId={{hotelId}}","host":["{{baseUrl}}"],"path":["api","room-types"],"query":[{"key":"hotelId","value":"{{hotelId}}"}]}}},
+      {"name":"Create Room","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"hotelId\": \"{{hotelId}}\",\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"roomNumber\": \"101\",\n  \"status\": \"available\"\n}"},"url":{"raw":"{{baseUrl}}/api/admin/rooms","host":["{{baseUrl}}"],"path":["api","admin","rooms"]}}},
+      {"name":"List Rooms","request":{"method":"GET","url":{"raw":"{{baseUrl}}/api/rooms?hotelId={{hotelId}}","host":["{{baseUrl}}"],"path":["api","rooms"],"query":[{"key":"hotelId","value":"{{hotelId}}"}]}}},
+      {"name":"Search Availability","request":{"method":"GET","url":{"raw":"{{baseUrl}}/api/hotels/search?hotelId={{hotelId}}&checkIn=2026-10-01&checkOut=2026-10-03","host":["{{baseUrl}}"],"path":["api","hotels","search"],"query":[{"key":"hotelId","value":"{{hotelId}}"},{"key":"checkIn","value":"2026-10-01"},{"key":"checkOut","value":"2026-10-03"},{"key":"roomTypeId","value":"{{roomTypeId}}"}]}}}
+    ]},
+    {"name":"Pricing","item":[
+      {"name":"Create Pricing Rule","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"name\": \"Weekend Premium\",\n  \"type\": \"WEEKEND\",\n  \"multiplier\": 1.2,\n  \"active\": true\n}"},"url":{"raw":"{{baseUrl}}/api/admin/pricing-rules","host":["{{baseUrl}}"],"path":["api","admin","pricing-rules"]}}},
+      {"name":"List Pricing Rules","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/pricing-rules?roomTypeId={{roomTypeId}}","host":["{{baseUrl}}"],"path":["api","pricing-rules"],"query":[{"key":"roomTypeId","value":"{{roomTypeId}}"}]}}},
+      {"name":"Update Pricing Rule","request":{"method":"PUT","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"multiplier\":1.25}"},"url":{"raw":"{{baseUrl}}/api/admin/pricing-rules/{{pricingRuleId}}","host":["{{baseUrl}}"],"path":["api","admin","pricing-rules","{{pricingRuleId}}"]}}},
+      {"name":"Delete Pricing Rule","request":{"method":"DELETE","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/admin/pricing-rules/{{pricingRuleId}}","host":["{{baseUrl}}"],"path":["api","admin","pricing-rules","{{pricingRuleId}}"]}}}
+    ]},
+    {"name":"Bookings","item":[
+      {"name":"Create Booking","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"roomId\": \"{{roomId}}\",\n  \"checkIn\": \"2026-10-01T14:00:00.000Z\",\n  \"checkOut\": \"2026-10-03T11:00:00.000Z\",\n  \"addOns\": [{\"name\":\"Breakfast\",\"price\":500}]\n}"},"url":{"raw":"{{baseUrl}}/api/bookings","host":["{{baseUrl}}"],"path":["api","bookings"]}}},
+      {"name":"Get Booking","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/bookings/{{bookingId}}","host":["{{baseUrl}}"],"path":["api","bookings","{{bookingId}}"]}}},
+      {"name":"Confirm Booking","request":{"method":"PUT","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"status\":\"CONFIRMED\"}"},"url":{"raw":"{{baseUrl}}/api/bookings/{{bookingId}}/status","host":["{{baseUrl}}"],"path":["api","bookings","{{bookingId}}","status"]}}},
+      {"name":"Cancel Booking","request":{"method":"PUT","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"reason\":\"Change of plans\"}"},"url":{"raw":"{{baseUrl}}/api/bookings/{{bookingId}}/cancel","host":["{{baseUrl}}"],"path":["api","bookings","{{bookingId}}","cancel"]}}},
+      {"name":"Guest Booking History","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/guests/{{guestId}}/bookings","host":["{{baseUrl}}"],"path":["api","guests","{{guestId}}","bookings"]}}}
+    ]},
+    {"name":"Staff Operations","item":[
+      {"name":"Check In","request":{"method":"PUT","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{}"},"url":{"raw":"{{baseUrl}}/api/bookings/{{bookingId}}/checkin","host":["{{baseUrl}}"],"path":["api","bookings","{{bookingId}}","checkin"]}}},
+      {"name":"Check Out","request":{"method":"PUT","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{}"},"url":{"raw":"{{baseUrl}}/api/bookings/{{bookingId}}/checkout","host":["{{baseUrl}}"],"path":["api","bookings","{{bookingId}}","checkout"]}}},
+      {"name":"Update Housekeeping","request":{"method":"PUT","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"status\":\"CLEANING\"}"},"url":{"raw":"{{baseUrl}}/api/rooms/{{roomId}}/housekeeping","host":["{{baseUrl}}"],"path":["api","rooms","{{roomId}}","housekeeping"]}}},
+      {"name":"Invoice","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/bookings/{{bookingId}}/invoice","host":["{{baseUrl}}"],"path":["api","bookings","{{bookingId}}","invoice"]}}}
+    ]},
+    {"name":"Reports","item":[
+      {"name":"Occupancy Report","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/admin/reports/occupancy?hotelId={{hotelId}}","host":["{{baseUrl}}"],"path":["api","admin","reports","occupancy"],"query":[{"key":"hotelId","value":"{{hotelId}}"}]}}},
+      {"name":"Revenue Report","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/api/admin/reports/revenue?hotelId={{hotelId}}","host":["{{baseUrl}}"],"path":["api","admin","reports","revenue"],"query":[{"key":"hotelId","value":"{{hotelId}}"}]}}}
+    ]}
+  ]
+}

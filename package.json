@@ -1,0 +1,25 @@
+{
+  "name": "hotel-room-booking-platform",
+  "version": "1.0.0",
+  "description": "Hotel Room Booking and Reservation Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed-admin": "node scripts/seedAdmin.js",
+    "test": "node -e \"console.log('No automated tests configured yet')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "https://registry.npmjs.org/mongodb/-/mongodb-7.5.0.tgz",
+    "mongoose": "^9.9.4"
+  }
+}

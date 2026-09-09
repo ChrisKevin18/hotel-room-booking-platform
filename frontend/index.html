@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StaySphere — Hotel Room Booking Platform</title>
+  <meta name="description" content="Hotel Room Booking and Reservation Platform demo frontend">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home"><span class="brand-mark">S</span><span>StaySphere</span></a>
+    <nav id="mainNav" class="nav"></nav>
+    <div id="authArea" class="auth-area"></div>
+  </header>
+
+  <main>
+    <section id="home" class="hero page-section">
+      <div class="hero-copy">
+        <span class="eyebrow">HOTEL ROOM BOOKING PLATFORM</span>
+        <h1>Book better stays.<br><span>Manage every room.</span></h1>
+        <p>A polished frontend for the Express + MongoDB reservation platform. Search availability, reserve rooms, manage bookings and demonstrate admin operations from one dashboard.</p>
+        <div class="hero-actions">
+          <button class="btn primary" data-go="search">Find a room</button>
+          <button class="btn ghost" data-go="about">Explore modules</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-top"><span>Live booking workspace</span><span class="dot"></span></div>
+        <div class="hotel-visual"><div class="visual-building"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="visual-pool"></div></div>
+        <div class="hero-stat"><div><strong>13</strong><span>Core modules</span></div><div><strong>JWT</strong><span>Protected access</span></div><div><strong>API</strong><span>Express backend</span></div></div>
+      </div>
+    </section>
+
+    <section id="search" class="page-section muted-section">
+      <div class="section-heading"><div><span class="eyebrow">AVAILABILITY</span><h2>Find your room</h2></div><span class="pill">Real API search</span></div>
+      <form id="availabilityForm" class="search-card">
+        <label>Hotel<select id="searchHotel" required></select></label>
+        <label>Check-in<input id="checkIn" type="date" required></label>
+        <label>Check-out<input id="checkOut" type="date" required></label>
+        <button class="btn primary" type="submit">Search rooms</button>
+      </form>
+      <div id="searchResults" class="card-grid"></div>
+    </section>
+
+    <section id="auth" class="page-section">
+      <div class="auth-grid">
+        <div><span class="eyebrow">ACCOUNT</span><h2>Access your booking workspace</h2><p class="muted">Guests can register, log in, search rooms and manage their reservations. Staff and admins get protected operations based on their roles.</p><div class="feature-list"><div>✓ JWT authentication</div><div>✓ Passwords stored as bcrypt hashes</div><div>✓ Role-based Admin / Staff / Guest access</div></div></div>
+        <div class="auth-card">
+          <div class="tabs"><button class="tab active" data-auth-tab="login">Login</button><button class="tab" data-auth-tab="register">Register</button></div>
+          <form id="loginForm" class="auth-form"><label>Email<input id="loginEmail" type="email" value="admin@hotelbooking.com" required></label><label>Password<input id="loginPassword" type="password" value="Admin@123" required></label><button class="btn primary full" type="submit">Sign in</button><small>Demo admin: admin@hotelbooking.com / Admin@123</small></form>
+          <form id="registerForm" class="auth-form hidden"><label>Full name<input id="registerName" required></label><label>Email<input id="registerEmail" type="email" required></label><label>Password<input id="registerPassword" type="password" minlength="6" required></label><button class="btn primary full" type="submit">Create guest account</button></form>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard" class="page-section muted-section hidden">
+      <div class="section-heading"><div><span class="eyebrow">WORKSPACE</span><h2 id="welcomeTitle">Dashboard</h2></div><span id="rolePill" class="pill"></span></div>
+      <div id="dashboardStats" class="stats-grid"></div>
+      <div class="dashboard-grid">
+        <div class="panel"><div class="panel-head"><h3>My bookings</h3><button class="btn small ghost" id="refreshBookings">Refresh</button></div><div id="bookingList"></div></div>
+        <div class="panel" id="adminPanel"><div class="panel-head"><h3>Admin controls</h3></div><div class="admin-forms"><form id="hotelForm"><h4>Add hotel</h4><input id="hotelName" placeholder="Hotel name" required><input id="hotelCity" placeholder="City" required><input id="hotelAmenities" placeholder="Amenities, comma separated" required><input id="hotelRating" type="number" min="1" max="5" step="0.1" placeholder="Rating"><button class="btn primary small">Create hotel</button></form><form id="roomTypeForm"><h4>Add room type</h4><select id="roomTypeHotel" required></select><input id="roomTypeName" placeholder="Deluxe King" required><input id="roomCapacity" type="number" min="1" placeholder="Capacity" required><input id="roomPrice" type="number" min="0" placeholder="Base price" required><input id="roomTotal" type="number" min="1" placeholder="Total rooms" required><button class="btn primary small">Create room type</button></form><form id="roomForm"><h4>Add room</h4><select id="roomHotel" required></select><select id="roomType" required></select><input id="roomNumber" placeholder="101" required><button class="btn primary small">Create room</button></form></div></div>
+      </div>
+    </section>
+
+    <section id="admin" class="page-section hidden">
+      <div class="section-heading"><div><span class="eyebrow">ADMIN</span><h2>Operations dashboard</h2></div></div>
+      <div class="report-actions"><button class="btn primary" id="occupancyBtn">Load occupancy report</button><button class="btn ghost" id="revenueBtn">Load revenue report</button></div>
+      <div id="reportOutput" class="report-grid"></div>
+      <div class="panel"><div class="panel-head"><h3>Rooms & housekeeping</h3><button class="btn small ghost" id="refreshRooms">Refresh</button></div><div id="roomList" class="table-wrap"></div></div>
+    </section>
+
+    <section id="about" class="page-section muted-section">
+      <div class="section-heading"><div><span class="eyebrow">PROJECT MODULES</span><h2>Everything connected to the backend</h2></div></div>
+      <div class="module-grid" id="moduleGrid"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <footer><span>StaySphere • P03 Hotel Room Booking Platform</span><span>Express • MongoDB • JWT • REST API</span></footer>
+  <script src="/js/app.js"></script>
+</body>
+</html>
