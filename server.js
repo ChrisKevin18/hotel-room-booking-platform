@@ -11,6 +11,34 @@ app.use(express.json());
 // Serve the demo frontend from the same Express application.
 app.use(express.static(path.join(__dirname, "frontend")));
 
+// Kick off the MongoDB connection as soon as this module loads. This matters
+// in serverless environments (e.g. Vercel): the file is `require`d as a
+// module rather than executed directly, so `require.main === module` below
+// is false and `start()` never runs there. Without this, every DB-backed
+// route (like /api/hotels) would 500 because Mongoose was never connected.
+const dbConnection = connectDB().catch((err) => {
+  console.error("MongoDB connection error:", err.message);
+  return null;
+});
+
+// Make sure the connection (or a clear connection error) is resolved before
+// any request reaches a route that touches the database. Scoped to /api so
+// the static frontend still renders even if the DB is briefly unavailable.
+app.use("/api", async (req, res, next) => {
+  try {
+    const conn = await dbConnection;
+    if (!conn) {
+      const err = new Error("Database connection is not available");
+      err.statusCode = 503;
+      err.errorCode = "DB_UNAVAILABLE";
+      throw err;
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 const authRoutes = require("./routes/authRoutes");
 const hotelRoutes = require("./routes/hotelRoutes");
 const roomRoutes = require("./routes/roomRoutes");
@@ -33,8 +61,9 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 async function start(){
-  try { await connectDB(); app.listen(PORT,()=>console.log(`Server running on port ${PORT}`)); }
-  catch(err){ console.error("MongoDB connection error:",err.message); process.exit(1); }
+  const conn = await dbConnection;
+  if (!conn) { process.exit(1); } // connection error already logged above
+  app.listen(PORT,()=>console.log(`Server running on port ${PORT}`));
 }
 if(require.main===module) start();
 module.exports = app;
